@@ -1,27 +1,21 @@
-import asyncio
 import typer
-from app.store import db
-from app.dice.flows import login as login_flow, apply_to_job
+import asyncio
+from app.dice.flows import login, apply_once
 
-app = typer.Typer(help="Dice Easy Apply v1.0.0 CLI")
+app = typer.Typer(help="Dice Easy Apply Bot CLI")
 
-@app.command()
-def initdb():
-    """Initialize local SQLite database."""
-    db.init_db()
-    typer.echo("Database initialized.")
 
 @app.command()
-def login():
-    """Login to Dice (solve CAPTCHA/2FA manually if prompted)."""
-    asyncio.run(login_flow())
-    typer.echo("Login flow completed.")
+def login_cmd():
+    """Login to Dice and save session (cookies & storage)."""
+    asyncio.run(login())
 
-@app.command()
-def apply_url(url: str):
-    """Apply to a single Easy Apply job by URL."""
-    msg = asyncio.run(apply_to_job(url))
-    typer.echo(msg)
+
+@app.command("apply-url")
+def apply_url(job_url: str):
+    """Apply to a single job posting by URL (requires prior login)."""
+    asyncio.run(apply_once(job_url))
+
 
 if __name__ == "__main__":
     app()
