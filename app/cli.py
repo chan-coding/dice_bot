@@ -1,21 +1,24 @@
-import typer
+# app/cli.py
 import asyncio
+import click
 from app.dice.flows import login, apply_once
+from app.utils import log
 
-app = typer.Typer(help="Dice Easy Apply Bot CLI")
+@click.group()
+def cli():
+    """Dice Bot CLI"""
+    pass
 
-
-@app.command()
+@cli.command("login")
 def login_cmd():
-    """Login to Dice and save session (cookies & storage)."""
+    """Login to Dice and save session cookies"""
     asyncio.run(login())
 
-
-@app.command("apply-url")
-def apply_url(job_url: str):
-    """Apply to a single job posting by URL (requires prior login)."""
-    asyncio.run(apply_once(job_url))
-
+@cli.command("apply-url")
+@click.argument("url")
+def apply_url_cmd(url):
+    """Apply to a single job by URL"""
+    asyncio.run(apply_once(url))
 
 if __name__ == "__main__":
-    app()
+    cli()

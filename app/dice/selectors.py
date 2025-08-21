@@ -13,8 +13,9 @@ LOGIN_PASSWORD = (
     "input#password, input[name='password'], input[type='password'], "
     "input[autocomplete='current-password'], input[aria-label*='Password' i]"
 )
+# Prefer the form-scoped submit on the password page (avoid header Login/Register)
 LOGIN_BUTTON = (
-    "button[data-testid='sign-in-button'], "
+    "form button[data-testid='sign-in-button'], "
     "form button[type='submit']:has-text('Sign In'), "
     "form button:has-text('Sign in'), "
     "form button:has-text('Log In'), "
